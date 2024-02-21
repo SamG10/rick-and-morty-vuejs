@@ -39,11 +39,15 @@ watch(
 
 <template>
   <NavbarComponent />
+
   <div class="d-flex justify-content-center align-items-center">
     <h1 class="p-2">All Characters</h1>
     <p>({{ responseApi.pagination.count }})</p>
   </div>
 
+  <div class="d-flex justify-content-center">
+    <div v-if="responseApi.loading" class="spinner-border" role="status"></div>
+  </div>
   <!-- Pagination -->
   <div class="d-flex justify-content-center">
     <vue-awesome-paginate

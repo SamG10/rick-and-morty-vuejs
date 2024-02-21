@@ -19,6 +19,10 @@ onMounted(() => {
     Character: {{ responseApiOneCharacter.character.name }}
   </h1>
 
+  <div class="d-flex justify-content-center">
+    <div v-if="responseApiOneCharacter.loading" class="spinner-border" role="status"></div>
+  </div>
+
   <div class="d-flex justify-content-center mb-3">
     <img :src="responseApiOneCharacter.character.image" alt="" />
   </div>
