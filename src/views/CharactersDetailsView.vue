@@ -29,7 +29,7 @@ onMounted(() => {
 </script>
 <template>
   <NavbarComponent />
-  <div v-if="responseApi.errors">We have encounters errors : {{ responseApi.errors }}</div>
+  <div v-if="responseApi.errors">An error occured : {{ responseApi.errors }}</div>
 
   <h1 class="d-flex justify-content-center mb-5">Character: {{ responseApi.character?.name }}</h1>
 

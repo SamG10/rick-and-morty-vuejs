@@ -67,7 +67,7 @@ onMounted(() => {
   </div>
 
   <div v-if="responseApi.errors">
-    We encounters a problems to retrieve Rick & Morty Characters, the error is:
+    An error occured :
     {{ responseApi.errors }}
   </div>
 
