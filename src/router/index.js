@@ -31,12 +31,12 @@ const router = createRouter({
   ]
 })
 
-// router.beforeEach((to) => {
-//   const authStore = useAuthStore()
-//   if (authStore.isLoggedIn) {
-//     return true
-//   } else if (to.fullPath.startsWith('/characters')) return '/login'
-//   return true
-// })
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+  if (authStore.isLoggedIn) {
+    return true
+  } else if (to.fullPath.startsWith('/characters')) return '/login'
+  return true
+})
 
 export default router

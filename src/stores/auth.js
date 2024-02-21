@@ -3,7 +3,11 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref(null)
+  const localStorageUser = localStorage.getItem('user')
+
+  console.log(JSON.parse(localStorageUser))
+
+  const user = ref(JSON.parse(localStorageUser) || null)
   const router = useRouter()
 
   const isLoggedIn = computed(() => !!user.value)
@@ -14,8 +18,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function login(email, password) {
-    const localStorageUser = localStorage.getItem('user')
-
     if (localStorageUser) {
       const user = JSON.parse(localStorageUser)
 
