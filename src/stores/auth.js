@@ -1,14 +1,28 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
+  const router = useRouter()
 
   const isLoggedIn = computed(() => !!user.value)
 
-  function login(username, email, password) {
+  function register(username, email, password) {
     user.value = { username, email, password }
     localStorage.setItem('user', JSON.stringify(user.value))
+  }
+
+  function login(email, password) {
+    const localStorageUser = localStorage.getItem('user')
+
+    if (localStorageUser) {
+      const user = JSON.parse(localStorageUser)
+
+      if (user?.email === email && user?.password === password) {
+        router.push('/')
+      } else throw new Error('Email or Password are wrong')
+    } else throw new Error('User is not register')
   }
 
   function logout() {
@@ -16,5 +30,5 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
   }
 
-  return { user, isLoggedIn, login, logout }
+  return { user, isLoggedIn, register, login, logout }
 })

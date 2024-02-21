@@ -1,51 +1,40 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import axios from 'axios'
+import { onMounted, ref, watch } from 'vue'
 import NavbarComponent from '@/components/NavbarComponent.vue'
+import { useFetchApiStore } from '@/stores'
 
-const responseApi = ref({
-  pagination: {},
-  characters: [],
-  errors: null
-})
+const { fetchAllCharacters, fetchCharactersByName, responseApi, fetchCharactersByFilters } =
+  useFetchApiStore()
 
-const name = ref(null)
 const currentPage = ref(1)
-
-async function fetchCharacterByName() {
-  if (name.value) {
-    await axios
-      .get(`https://rickandmortyapi.com/api/character?name=${name.value}`)
-      .then((res) => {
-        responseApi.value.characters = res.data.results
-      })
-      .catch((error) => {
-        console.log(error)
-        responseApi.value.errors = error.message
-      })
-  }
-}
+const inputName = ref('')
+const filters = ref({
+  gender: '',
+  type: '',
+  species: '',
+  status: ''
+})
 
 function onPageChange() {
   fetchAllCharacters(currentPage.value)
 }
 
-function fetchAllCharacters(page) {
-  axios
-    .get(`https://rickandmortyapi.com/api/character?page=${page}`)
-    .then((res) => {
-      responseApi.value.characters = res.data.results
-      responseApi.value.pagination = res.data.info
-    })
-    .catch((error) => {
-      console.log(error)
-      responseApi.value.errors = error.message
-    })
+const onSubmit = () => {
+  fetchCharactersByName(inputName.value)
 }
 
 onMounted(() => {
   fetchAllCharacters()
 })
+
+watch(
+  filters,
+  (newF) => {
+    console.log('newF', newF)
+    fetchCharactersByFilters(newF)
+  },
+  { deep: true }
+)
 </script>
 
 <template>
@@ -66,25 +55,68 @@ onMounted(() => {
     />
   </div>
 
-  <div v-if="responseApi.errors">
+  <div v-if="responseApi.error">
     An error occured :
-    {{ responseApi.errors }}
+    {{ responseApi.error }}
   </div>
 
   <div class="container d-flex justify-content-center">
-    <form @submit.prevent="fetchCharacterByName">
+    <form @submit.prevent="onSubmit">
       <div class="input-group input-group-md">
         <input
           type="text"
           class="form-control"
           aria-label="Sizing example input"
           aria-describedby="inputGroup-sizing-lg"
-          v-model="name"
+          v-model="inputName"
           placeholder="Search by name"
         />
         <button type="submit" class="btn btn-info">Search</button>
       </div>
     </form>
+  </div>
+
+  <div class="d-flex justify-content-center p-2">
+    <select
+      class="form-select form-select-sm"
+      aria-label="Small select example"
+      v-model="filters.gender"
+    >
+      <option selected>Gender</option>
+      <option value="female">Female</option>
+      <option value="male">Male</option>
+      <option value="unknown">Unknown</option>
+    </select>
+    <select
+      class="form-select form-select-sm"
+      aria-label="Small select example"
+      v-model="filters.type"
+    >
+      <option selected>Type</option>
+      <option value="parasite">Parasite</option>
+      <option value="cromulon">Cromulon</option>
+      <option value="dog">Dog</option>
+    </select>
+    <select
+      class="form-select form-select-sm"
+      aria-label="Small select example"
+      v-model="filters.species"
+    >
+      <option selected>Species</option>
+      <option value="human">Human</option>
+      <option value="alien">Alien</option>
+      <option value="humanoid">Humanoid</option>
+    </select>
+    <select
+      class="form-select form-select-sm"
+      aria-label="Small select example"
+      v-model="filters.status"
+    >
+      <option selected>Status</option>
+      <option value="alive">Alive</option>
+      <option value="dead">Dead</option>
+      <option value="unknown">Unknown</option>
+    </select>
   </div>
 
   <div class="d-flex flex-wrap justify-content-center">

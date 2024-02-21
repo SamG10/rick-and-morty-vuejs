@@ -38,6 +38,7 @@ const store = useAuthStore()
             </a>
             <ul class="dropdown-menu">
               <li><RouterLink class="dropdown-item" to="/login">Login</RouterLink></li>
+              <li><RouterLink class="dropdown-item" to="/register">Register</RouterLink></li>
               <li><hr class="dropdown-divider" /></li>
               <li>
                 <RouterLink class="dropdown-item" to="/" :onclick="store.logout">Logout</RouterLink>

@@ -1,11 +1,10 @@
 <script setup>
+import NavbarComponent from '@/components/NavbarComponent.vue'
 import { useAuthStore } from '@/stores/auth'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import NavbarComponent from '@/components/NavbarComponent.vue'
 
-const newUser = ref({
-  username: '',
+const user = ref({
   email: '',
   password: ''
 })
@@ -14,13 +13,13 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 const handleSubmit = () => {
-  authStore.register(newUser.value.username, newUser.value.email, newUser.value.password)
-  newUser.value.email = ''
-  newUser.value.username = ''
-  newUser.value.password = ''
-  router.push('/login')
+  authStore.login(user.value.email, user.value.password)
+  user.value.email = ''
+  user.value.password = ''
+  router.push('/')
 }
 </script>
+
 <template>
   <NavbarComponent />
   <form @submit.prevent="handleSubmit">
@@ -31,18 +30,14 @@ const handleSubmit = () => {
         class="form-control"
         id="email"
         aria-describedby="emailHelp"
-        v-model="newUser.email"
+        v-model="user.email"
       />
     </div>
     <div class="mb-3">
-      <label for="username" class="form-label">Username</label>
-      <input type="text" class="form-control" id="username" v-model="newUser.username" />
-    </div>
-    <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password" v-model="newUser.password" />
+      <input type="password" class="form-control" id="password" v-model="user.password" />
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">Login</button>
   </form>
 </template>
 <style scoped>
