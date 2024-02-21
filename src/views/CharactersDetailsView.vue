@@ -15,7 +15,6 @@ const fetchOneCharacter = () => {
   axios
     .get('https://rickandmortyapi.com/api/character/' + route.params.id)
     .then((res) => {
-      console.log(res)
       responseApi.value.character = res.data
     })
     .catch((error) => {

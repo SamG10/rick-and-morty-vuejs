@@ -31,7 +31,6 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const authStore = useAuthStore()
   if (authStore.isLoggedIn) {
-    console.log('okok')
     return true
   } else if (to.fullPath.startsWith('/characters')) return '/login'
   return true

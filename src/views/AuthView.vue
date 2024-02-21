@@ -14,7 +14,6 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 const handleSubmit = () => {
-  console.log('handleSUbmit')
   authStore.login(newUser.value.username, newUser.value.email, newUser.value.password)
   newUser.value.email = ''
   newUser.value.username = ''
